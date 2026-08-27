@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mesa de Ayuda - Tickets</title>
+
+</head>
+
+<body>
+
+    <h1>Mesa de Ayuda</h1>
+
+    <h2>Listado de Tickets</h2>
+
+    <table border="1">
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Prioridad</th>
+                <th>Responsable</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr th:each="ticket : ${tickets}">
+
+                <td th:text="${ticket.id}"></td>
+
+                <td th:text="${ticket.titulo}"></td>
+
+                <td th:text="${ticket.descripcion}"></td>
+
+                <td th:text="${ticket.prioridad}"></td>
+
+                <td th:text="${ticket.responsable}"></td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>
