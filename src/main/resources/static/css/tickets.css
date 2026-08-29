@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff5f5;
+    color: #4a2a2a;
+    min-height: 100vh;
+}
+
+.contenedor {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.encabezado {
+    background-color: #f8dada;
+    margin-top: 40px;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #efb7b7;
+    box-shadow: 0 4px 10px rgba(120, 40, 40, 0.08);
+}
+
+.encabezado h1 {
+    color: #9e3d3d;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.encabezado p {
+    color: #704545;
+    font-size: 17px;
+}
+
+.tickets {
+    background-color: #ffffff;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #f0caca;
+    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
+}
+
+.tickets h2 {
+    color: #a34444;
+    margin-bottom: 25px;
+    font-size: 26px;
+}
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+thead {
+    background-color: #d98282;
+}
+
+th {
+    color: #ffffff;
+    padding: 14px 12px;
+    text-align: center;
+    font-size: 15px;
+}
+
+td {
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid #f1d2d2;
+    color: #543737;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff3f3;
+}
+
+tbody tr:hover {
+    background-color: #fce2e2;
+}
+
+.prioridad {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #f5cccc;
+    color: #913737;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.pie {
+    margin: 25px 0 40px;
+    color: #8a5a5a;
+    font-size: 14px;
+}

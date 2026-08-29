@@ -2,54 +2,77 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Mesa de Ayuda - Tickets</title>
 
+    <link rel="stylesheet" th:href="@{/css/tickets.css}">
 </head>
 
 <body>
 
-    <h1>Mesa de Ayuda</h1>
+    <main class="contenedor">
 
-    <h2>Listado de Tickets</h2>
+        <header class="encabezado">
+            <h1>Mesa de Ayuda</h1>
+            <p>Gestión y seguimiento de tickets</p>
+        </header>
 
-    <table border="1">
+        <section class="tickets">
 
-        <thead>
+            <h2>Listado de Tickets</h2>
 
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Prioridad</th>
-                <th>Responsable</th>
-            </tr>
+            <div class="tabla-contenedor">
 
-        </thead>
+                <table>
 
-        <tbody>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Prioridad</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
 
-            <tr th:each="ticket : ${tickets}">
+                    <tbody>
 
-                <td th:text="${ticket.id}"></td>
+                        <tr th:each="ticket : ${tickets}">
 
-                <td th:text="${ticket.titulo}"></td>
+                            <td th:text="${ticket.id}"></td>
 
-                <td th:text="${ticket.descripcion}"></td>
+                            <td th:text="${ticket.titulo}"></td>
 
-                <td th:text="${ticket.prioridad}"></td>
+                            <td th:text="${ticket.descripcion}"></td>
 
-                <td th:text="${ticket.responsable}"></td>
+                            <td>
+                                <span
+                                    class="prioridad"
+                                    th:text="${ticket.prioridad}">
+                                </span>
+                            </td>
 
-            </tr>
+                            <td th:text="${ticket.responsable}"></td>
 
-        </tbody>
+                        </tr>
 
-    </table>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <footer class="pie">
+
+            <p>Sistema de Mesa de Ayuda</p>
+
+        </footer>
+
+    </main>
 
 </body>
 
