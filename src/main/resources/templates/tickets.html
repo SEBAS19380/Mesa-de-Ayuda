@@ -23,6 +23,11 @@
 
             <h2>Listado de Tickets</h2>
 
+            <!-- Mensaje de resultado -->
+            <div class="mensaje-exito" th:if="${mensaje}" th:text="${mensaje}">
+            </div>
+
+            <!-- Tabla de tickets -->
             <div class="tabla-contenedor">
 
                 <table>
@@ -48,9 +53,7 @@
                             <td th:text="${ticket.descripcion}"></td>
 
                             <td>
-                                <span
-                                    class="prioridad"
-                                    th:text="${ticket.prioridad}">
+                                <span class="prioridad" th:text="${ticket.prioridad}">
                                 </span>
                             </td>
 
@@ -63,6 +66,87 @@
                 </table>
 
             </div>
+
+            <!-- Botón y formulario para agregar ticket -->
+            <details class="agregar-ticket">
+
+                <summary>
+                    ＋ Agregar nuevo ticket
+                </summary>
+
+                <div class="formulario-ticket">
+
+                    <h2>Agregar nuevo ticket</h2>
+
+                    <form th:action="@{/tickets/agregar}" method="post">
+
+                        <div class="campo">
+
+                            <label for="titulo">
+                                Título:
+                            </label>
+
+                            <input type="text" id="titulo" name="titulo" required>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="descripcion">
+                                Descripción:
+                            </label>
+
+                            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="prioridad">
+                                Prioridad:
+                            </label>
+
+                            <select id="prioridad" name="prioridad" required>
+
+                                <option value="">
+                                    Seleccione una prioridad
+                                </option>
+
+                                <option value="ALTA">
+                                    ALTA
+                                </option>
+
+                                <option value="MEDIA">
+                                    MEDIA
+                                </option>
+
+                                <option value="BAJA">
+                                    BAJA
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="responsable">
+                                Responsable:
+                            </label>
+
+                            <input type="text" id="responsable" name="responsable" required>
+
+                        </div>
+
+                        <button type="submit">
+                            Agregar ticket
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </details>
 
         </section>
 

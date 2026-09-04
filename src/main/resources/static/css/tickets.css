@@ -47,15 +47,26 @@ body {
     box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
 }
 
-.tickets h2 {
+.tickets>h2 {
     color: #a34444;
     margin-bottom: 25px;
     font-size: 26px;
 }
 
+.mensaje-exito {
+    background-color: #e8f7e8;
+    color: #397339;
+    border: 1px solid #b9dfb9;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
 .tabla-contenedor {
     width: 100%;
     overflow-x: auto;
+    margin-bottom: 20px;
 }
 
 table {
@@ -80,6 +91,7 @@ td {
     text-align: center;
     border-bottom: 1px solid #f1d2d2;
     color: #543737;
+    font-size: 15px;
 }
 
 tbody tr:nth-child(even) {
@@ -100,8 +112,171 @@ tbody tr:hover {
     font-size: 13px;
 }
 
+.agregar-ticket {
+    width: 100%;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.agregar-ticket summary {
+    list-style: none;
+    cursor: pointer;
+    background-color: #d98282;
+    color: #ffffff;
+    padding: 13px 20px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.agregar-ticket summary::-webkit-details-marker {
+    display: none;
+}
+
+.agregar-ticket summary::marker {
+    display: none;
+    content: "";
+}
+
+.agregar-ticket summary:hover {
+    background-color: #c96f6f;
+}
+
+.agregar-ticket summary:active {
+    transform: scale(0.99);
+}
+
+.agregar-ticket[open] summary {
+    border-radius: 9px 9px 0 0;
+}
+
+.formulario-ticket {
+    background-color: #fff7f7;
+    border: 1px solid #efcaca;
+    border-top: none;
+    padding: 25px;
+    border-radius: 0 0 9px 9px;
+}
+
+.formulario-ticket h2 {
+    color: #a34444;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 7px;
+    color: #704545;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #e2baba;
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #4a2a2a;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+    border-color: #d98282;
+    box-shadow: 0 0 0 3px rgba(217, 130, 130, 0.15);
+}
+
+.campo textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.formulario-ticket button {
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #d98282;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.formulario-ticket button:hover {
+    background-color: #c96f6f;
+}
+
+.formulario-ticket button:active {
+    transform: scale(0.99);
+}
+
 .pie {
     margin: 25px 0 40px;
     color: #8a5a5a;
     font-size: 14px;
+}
+
+@media (max-width: 768px) {
+
+    .contenedor {
+        width: 95%;
+    }
+
+    .encabezado {
+        margin-top: 20px;
+        padding: 25px 15px;
+    }
+
+    .encabezado h1 {
+        font-size: 30px;
+    }
+
+    .encabezado p {
+        font-size: 15px;
+    }
+
+    .tickets {
+        padding: 20px 15px;
+        margin-top: 20px;
+    }
+
+    .tickets>h2 {
+        font-size: 23px;
+    }
+
+    .tabla-contenedor {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 700px;
+    }
+
+    .formulario-ticket {
+        padding: 20px 15px;
+    }
 }
