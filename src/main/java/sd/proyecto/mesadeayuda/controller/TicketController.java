@@ -3,11 +3,13 @@ package sd.proyecto.mesadeayuda.controller;
 import sd.proyecto.mesadeayuda.model.Ticket;
 import sd.proyecto.mesadeayuda.service.TicketService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,20 +28,38 @@ public class TicketController {
         List<Ticket> tickets = ticketService.listar();
 
         model.addAttribute("tickets", tickets);
+        model.addAttribute("ticket", new Ticket(null, "", "", "", ""));
+
+        return "tickets";
+    }
+
+    @GetMapping("/tickets/nuevo")
+    public String mostrarFormulario(Model model) {
+
+        model.addAttribute("ticket", new Ticket(null, "", "", "", ""));
 
         return "tickets";
     }
 
     @PostMapping("/tickets/agregar")
     public String agregarTicket(
-            @RequestParam String titulo,
-            @RequestParam String descripcion,
-            @RequestParam String prioridad,
-            @RequestParam String responsable,
+            @Valid Ticket ticket,
+            BindingResult result,
             Model model) {
-        ticketService.agregar(titulo, descripcion, prioridad, responsable);
-        model.addAttribute("mensaje", "Ticket agregado correctamente.");
-        model.addAttribute("tickets", ticketService.listar());
-        return "tickets";
+
+        if (result.hasErrors()) {
+
+            model.addAttribute("tickets", ticketService.listar());
+
+            return "tickets";
+        }
+
+        ticketService.agregar(
+                ticket.getTitulo(),
+                ticket.getDescripcion(),
+                ticket.getPrioridad(),
+                ticket.getResponsable());
+
+        return "redirect:/tickets";
     }
 }

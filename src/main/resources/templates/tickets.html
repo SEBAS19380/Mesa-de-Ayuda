@@ -67,7 +67,6 @@
 
             </div>
 
-            <!-- Botón y formulario para agregar ticket -->
             <details class="agregar-ticket">
 
                 <summary>
@@ -78,7 +77,7 @@
 
                     <h2>Agregar nuevo ticket</h2>
 
-                    <form th:action="@{/tickets/agregar}" method="post">
+                    <form th:action="@{/tickets/agregar}" th:object="${ticket}" method="post">
 
                         <div class="campo">
 
@@ -86,7 +85,10 @@
                                 Título:
                             </label>
 
-                            <input type="text" id="titulo" name="titulo" required>
+                            <input type="text" id="titulo" th:field="*{titulo}">
+
+                            <div class="mensaje-error" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}">
+                            </div>
 
                         </div>
 
@@ -96,7 +98,11 @@
                                 Descripción:
                             </label>
 
-                            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                            <textarea id="descripcion" th:field="*{descripcion}" rows="4"></textarea>
+
+                            <div class="mensaje-error" th:if="${#fields.hasErrors('descripcion')}"
+                                th:errors="*{descripcion}">
+                            </div>
 
                         </div>
 
@@ -106,7 +112,7 @@
                                 Prioridad:
                             </label>
 
-                            <select id="prioridad" name="prioridad" required>
+                            <select id="prioridad" th:field="*{prioridad}">
 
                                 <option value="">
                                     Seleccione una prioridad
@@ -126,6 +132,10 @@
 
                             </select>
 
+                            <div class="mensaje-error" th:if="${#fields.hasErrors('prioridad')}"
+                                th:errors="*{prioridad}">
+                            </div>
+
                         </div>
 
                         <div class="campo">
@@ -134,7 +144,11 @@
                                 Responsable:
                             </label>
 
-                            <input type="text" id="responsable" name="responsable" required>
+                            <input type="text" id="responsable" th:field="*{responsable}">
+
+                            <div class="mensaje-error" th:if="${#fields.hasErrors('responsable')}"
+                                th:errors="*{responsable}">
+                            </div>
 
                         </div>
 
