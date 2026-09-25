@@ -280,3 +280,19 @@ tbody tr:hover {
         padding: 20px 15px;
     }
 }
+
+.mensaje-error {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: 1px solid #e5a3a3;
+    border-radius: 6px;
+    background-color: #fff1f1;
+    color: #b42323;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mensaje-error::before {
+    content: "⚠ ";
+    font-weight: bold;
+}

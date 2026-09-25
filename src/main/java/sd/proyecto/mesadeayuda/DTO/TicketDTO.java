@@ -1,42 +1,22 @@
-package sd.proyecto.mesadeayuda.model;
+package sd.proyecto.mesadeayuda.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
-@Entity
-public class Ticket {
+public class TicketDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @NotBlank(message = "El título es obligatorio")
     private String titulo;
 
+    @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
+    @NotBlank(message = "La prioridad es obligatoria")
     private String prioridad;
 
+    @NotBlank(message = "El responsable es obligatorio")
     private String responsable;
 
-    public Ticket() {
-    }
-
-    public Ticket(Long id, String titulo, String descripcion, String prioridad, String responsable) {
-        this.id = id;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.prioridad = prioridad;
-        this.responsable = responsable;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public TicketDTO() {
     }
 
     public String getTitulo() {

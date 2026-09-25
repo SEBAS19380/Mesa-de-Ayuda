@@ -1,60 +1,23 @@
 package sd.proyecto.mesadeayuda.service;
 
-import sd.proyecto.mesadeayuda.model.Ticket;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import sd.proyecto.mesadeayuda.model.Ticket;
+import sd.proyecto.mesadeayuda.repository.TicketRepository;
 
 @Service
 public class TicketService {
 
-    private final List<Ticket> tickets = new ArrayList<>();
+    private final TicketRepository ticketRepository;
 
-    public TicketService() {
-        tickets.add(
-                new Ticket(
-                        1L,
-                        "Computador no enciende",
-                        "El equipo no enciende al presionar el botón de inicio.",
-                        "ALTA",
-                        "Carlos Pérez"
-                )
-        );
-
-        tickets.add(
-                new Ticket(
-                        2L,
-                        "Problema con impresora",
-                        "La impresora no reconoce los documentos enviados.",
-                        "MEDIA",
-                        "Ana Gómez"
-                )
-        );
-
-        tickets.add(
-                new Ticket(
-                        3L,
-                        "Error en sistema",
-                        "El sistema presenta un error al iniciar sesión.",
-                        "ALTA",
-                        "Luis Rodríguez"
-                )
-        );
-
-        tickets.add(
-                new Ticket(
-                        4L,
-                        "Solicitud de instalación",
-                        "Se solicita instalar un programa en el equipo.",
-                        "BAJA",
-                        "María López"
-                )
-        );
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
 
     public List<Ticket> listar() {
-        return tickets;
+        return ticketRepository.findAll();
     }
 
     public Ticket agregar(
@@ -63,25 +26,14 @@ public class TicketService {
             String prioridad,
             String responsable) {
 
-        Long nuevoId = generarNuevoId();
-
         Ticket nuevoTicket = new Ticket(
-                nuevoId,
+                null,
                 titulo,
                 descripcion,
                 prioridad,
                 responsable
         );
 
-        tickets.add(nuevoTicket);
-
-        return nuevoTicket;
-    }
-
-    private Long generarNuevoId() {
-        return tickets.stream()
-                .mapToLong(Ticket::getId)
-                .max()
-                .orElse(0L) + 1;
+        return ticketRepository.save(nuevoTicket);
     }
 }
