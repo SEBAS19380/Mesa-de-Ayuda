@@ -18,75 +18,58 @@ public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
     @Before("execution(* sd.proyecto.mesadeayuda.service..*(..))")
-    public void antesDeEjecutar(JoinPoint joinPoint) {
+    public void antesDeEjecutar(
+            JoinPoint joinPoint) {
 
         String metodo = joinPoint.getSignature().getName();
 
-        if ("agregar".equals(metodo)) {
+        logger.info("");
+        logger.info("========================================");
+        logger.info("INICIANDO MÉTODO: {}", metodo);
+        logger.info("========================================");
 
-            Object[] parametros = joinPoint.getArgs();
+        Object[] parametros = joinPoint.getArgs();
 
-            logger.info("");
-            logger.info("========================================");
-            logger.info("           AGREGANDO TICKET");
-            logger.info("========================================");
-            logger.info("Método: agregar");
+        if (parametros.length > 0) {
+
             logger.info("Parámetros:");
 
             for (Object parametro : parametros) {
                 logger.info(" - {}", parametro);
             }
 
-            logger.info("========================================");
+        } else {
 
-        } else if ("listar".equals(metodo)) {
-
-            logger.info("");
-            logger.info("========================================");
-            logger.info("           LISTANDO TICKETS");
-            logger.info("========================================");
-
+            logger.info("Sin parámetros.");
         }
+
+        logger.info("========================================");
     }
 
-    @AfterReturning(
-        pointcut = "execution(* sd.proyecto.mesadeayuda.service..*(..))"
-    )
-    public void despuesDeEjecutar(JoinPoint joinPoint) {
+    @AfterReturning(pointcut = "execution(* sd.proyecto.mesadeayuda.service..*(..))")
+    public void despuesDeEjecutar(
+            JoinPoint joinPoint) {
 
         String metodo = joinPoint.getSignature().getName();
 
         logger.info("");
-
-        if ("agregar".equals(metodo)) {
-
-            logger.info("========================================");
-            logger.info("           TICKET AGREGADO");
-            logger.info("========================================");
-
-        } else if ("listar".equals(metodo)) {
-
-            logger.info("========================================");
-            logger.info("           TICKETS LISTADOS");
-            logger.info("========================================");
-
-        }
+        logger.info("========================================");
+        logger.info("MÉTODO COMPLETADO: {}", metodo);
+        logger.info("========================================");
     }
 
-    @AfterThrowing(
-        pointcut = "execution(* sd.proyecto.mesadeayuda.service..*(..))",
-        throwing = "error"
-    )
-    public void cuandoFalla(JoinPoint joinPoint, Throwable error) {
+    @AfterThrowing(pointcut = "execution(* sd.proyecto.mesadeayuda.service..*(..))", throwing = "error")
+    public void cuandoFalla(
+            JoinPoint joinPoint,
+            Throwable error) {
 
         String metodo = joinPoint.getSignature().getName();
 
         logger.error("");
         logger.error("========================================");
-        logger.error("           OPERACIÓN FALLIDA");
+        logger.error("ERROR EN MÉTODO: {}", metodo);
         logger.error("========================================");
-        logger.error("Método: {}", metodo);
-        logger.error("No se pudo completar la operación.");
+        logger.error("Mensaje: {}", error.getMessage());
         logger.error("========================================");
     }
 }

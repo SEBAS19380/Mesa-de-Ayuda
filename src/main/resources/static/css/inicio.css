@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff5f5;
+    color: #4a2a2a;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.tarjeta {
+    width: 100%;
+    max-width: 700px;
+
+    background-color: #ffffff;
+
+    padding: 50px;
+
+    border: 1px solid #f0caca;
+    border-radius: 18px;
+
+    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
+
+    text-align: center;
+}
+
+.tarjeta h1 {
+    color: #a34444;
+    font-size: 56px;
+    margin-bottom: 15px;
+}
+
+.tarjeta p {
+    color: #704545;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #e2baba;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #4a2a2a;
+    font-size: 15px;
+
+    outline: none;
+}
+
+.campo input:focus {
+    border-color: #d98282;
+    box-shadow: 0 0 0 3px rgba(217, 130, 130, 0.15);
+}
+
+button,
+.boton {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 12px;
+    padding: 13px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #d98282;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+button:hover,
+.boton:hover {
+    background-color: #c96f6f;
+}
+
+.mensaje-error {
+    margin-bottom: 15px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #e5a3a3;
+    border-radius: 6px;
+
+    background-color: #fff1f1;
+
+    color: #b42323;
+
+    font-size: 14px;
+}
+
+.mensaje-error::before {
+    content: "⚠ ";
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+
+    .tarjeta {
+        max-width: 95%;
+        padding: 30px 25px;
+    }
+
+    .tarjeta h1 {
+        font-size: 42px;
+    }
+
+    .tarjeta p {
+        font-size: 16px;
+    }
+}

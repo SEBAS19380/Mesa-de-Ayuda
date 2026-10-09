@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cuenta</title>
+
+    <link rel="stylesheet" th:href="@{/css/inicio.css}">
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <div class="tarjeta">
+
+            <h1>Crear Cuenta</h1>
+
+            <div class="mensaje-error"
+                 th:if="${errorCorreo}"
+                 th:text="${errorCorreo}">
+            </div>
+
+            <div class="mensaje-error"
+                 th:if="${errorPassword}"
+                 th:text="${errorPassword}">
+            </div>
+
+            <form th:action="@{/registro}"
+                  th:object="${usuario}"
+                  method="post">
+
+                <div class="campo">
+
+                    <input type="text"
+                           placeholder="Nombre"
+                           th:field="*{nombre}">
+
+                    <div class="mensaje-error"
+                         th:if="${#fields.hasErrors('nombre')}"
+                         th:errors="*{nombre}">
+                    </div>
+
+                </div>
+
+                <div class="campo">
+
+                    <input type="text"
+                           placeholder="Correo"
+                           th:field="*{correo}">
+
+                    <div class="mensaje-error"
+                         th:if="${#fields.hasErrors('correo')}"
+                         th:errors="*{correo}">
+                    </div>
+
+                </div>
+
+                <div class="campo">
+
+                    <input type="password"
+                           placeholder="Contraseña"
+                           th:field="*{password}">
+
+                    <div class="mensaje-error"
+                         th:if="${#fields.hasErrors('password')}"
+                         th:errors="*{password}">
+                    </div>
+
+                </div>
+
+                <div class="campo">
+
+                    <input type="password"
+                           placeholder="Confirmar Contraseña"
+                           th:field="*{confirmarPassword}">
+
+                    <div class="mensaje-error"
+                         th:if="${#fields.hasErrors('confirmarPassword')}"
+                         th:errors="*{confirmarPassword}">
+                    </div>
+
+                </div>
+
+                <button type="submit">
+                    Crear Cuenta
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

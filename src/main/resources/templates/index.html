@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesa de Ayuda</title>
+
+    <link rel="stylesheet" th:href="@{/css/inicio.css}">
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <div class="tarjeta">
+
+            <h1>Mesa de Ayuda</h1>
+
+            <p>Sistema de gestión de tickets</p>
+
+            <a th:href="@{/login}" class="boton">
+                Iniciar Sesión
+            </a>
+
+            <a th:href="@{/registro}" class="boton">
+                Crear Cuenta
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

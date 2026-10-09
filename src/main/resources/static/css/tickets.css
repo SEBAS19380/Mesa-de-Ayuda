@@ -12,19 +12,19 @@ body {
 }
 
 .contenedor {
-    width: 90%;
-    max-width: 1200px;
+    width: 95%;
+    max-width: 1700px;
     margin: 0 auto;
-    text-align: center;
 }
 
 .encabezado {
     background-color: #f8dada;
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 30px;
     border-radius: 15px;
     border: 1px solid #efb7b7;
     box-shadow: 0 4px 10px rgba(120, 40, 40, 0.08);
+    text-align: center;
 }
 
 .encabezado h1 {
@@ -39,132 +39,35 @@ body {
 }
 
 .tickets {
-    background-color: #ffffff;
     margin-top: 30px;
-    padding: 30px;
-    border-radius: 15px;
-    border: 1px solid #f0caca;
-    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
 }
 
-.tickets>h2 {
-    color: #a34444;
-    margin-bottom: 25px;
-    font-size: 26px;
+.layout-principal {
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    gap: 25px;
+    align-items: start;
 }
 
-.mensaje-exito {
-    background-color: #e8f7e8;
-    color: #397339;
-    border: 1px solid #b9dfb9;
-    padding: 12px 18px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 15px;
-}
+/* PANEL IZQUIERDO */
 
-.tabla-contenedor {
-    width: 100%;
-    overflow-x: auto;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-}
-
-thead {
-    background-color: #d98282;
-}
-
-th {
-    color: #ffffff;
-    padding: 14px 12px;
-    text-align: center;
-    font-size: 15px;
-}
-
-td {
-    padding: 14px 12px;
-    text-align: center;
-    border-bottom: 1px solid #f1d2d2;
-    color: #543737;
-    font-size: 15px;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #fff3f3;
-}
-
-tbody tr:hover {
-    background-color: #fce2e2;
-}
-
-.prioridad {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: #f5cccc;
-    color: #913737;
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.agregar-ticket {
-    width: 100%;
-    margin-top: 10px;
-    text-align: left;
-}
-
-.agregar-ticket summary {
-    list-style: none;
-    cursor: pointer;
-    background-color: #d98282;
-    color: #ffffff;
-    padding: 13px 20px;
-    border-radius: 9px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.2s ease,
-        transform 0.1s ease;
-}
-
-.agregar-ticket summary::-webkit-details-marker {
-    display: none;
-}
-
-.agregar-ticket summary::marker {
-    display: none;
-    content: "";
-}
-
-.agregar-ticket summary:hover {
-    background-color: #c96f6f;
-}
-
-.agregar-ticket summary:active {
-    transform: scale(0.99);
-}
-
-.agregar-ticket[open] summary {
-    border-radius: 9px 9px 0 0;
+.panel-izquierdo {
+    position: sticky;
+    top: 20px;
 }
 
 .formulario-ticket {
-    background-color: #fff7f7;
-    border: 1px solid #efcaca;
-    border-top: none;
+    background-color: #ffffff;
+    border: 1px solid #f0caca;
+    border-radius: 15px;
     padding: 25px;
-    border-radius: 0 0 9px 9px;
+    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
 }
 
 .formulario-ticket h2 {
     color: #a34444;
-    font-size: 22px;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
@@ -177,7 +80,7 @@ tbody tr:hover {
     margin-bottom: 7px;
     color: #704545;
     font-weight: bold;
-    font-size: 14px;
+    text-align: left;
 }
 
 .campo input,
@@ -187,11 +90,8 @@ tbody tr:hover {
     padding: 11px 12px;
     border: 1px solid #e2baba;
     border-radius: 7px;
-    background-color: #ffffff;
-    color: #4a2a2a;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
     outline: none;
+    background: white;
 }
 
 .campo input:focus,
@@ -202,84 +102,267 @@ tbody tr:hover {
 }
 
 .campo textarea {
-    resize: vertical;
     min-height: 100px;
+    resize: vertical;
 }
 
 .formulario-ticket button {
-    display: block;
     width: 100%;
-    padding: 13px 20px;
-
+    padding: 13px;
     border: none;
     border-radius: 8px;
-
     background-color: #d98282;
-    color: #ffffff;
-
+    color: white;
     font-size: 15px;
     font-weight: bold;
-
     cursor: pointer;
-
-    transition: background-color 0.2s ease,
-        transform 0.1s ease;
 }
 
 .formulario-ticket button:hover {
     background-color: #c96f6f;
 }
 
-.formulario-ticket button:active {
-    transform: scale(0.99);
+/* PANEL CENTRAL */
+
+.panel-centro {
+    background-color: #ffffff;
+    border: 1px solid #f0caca;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
 }
 
-.pie {
-    margin: 25px 0 40px;
-    color: #8a5a5a;
+.panel-centro h2 {
+    color: #a34444;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.mensaje-exito {
+    background-color: #e8f7e8;
+    color: #397339;
+    border: 1px solid #b9dfb9;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #f0caca;
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead {
+    background-color: #d98282;
+}
+
+th {
+    color: white;
+    padding: 16px 14px;
+    text-align: center;
+}
+
+thead tr th:first-child {
+    border-top-left-radius: 11px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 11px;
+}
+
+td {
+    padding: 16px 14px;
+    text-align: center;
+    border-bottom: 1px solid #f1d2d2;
+    color: #543737;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff5f5;
+}
+
+tbody tr:hover {
+    background-color: #fce7e7;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* PRIORIDADES */
+
+.prioridad {
+    display: inline-block;
+    min-width: 75px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.prioridad-alta {
+    background-color: #f8cccc;
+    color: #a52f2f;
+}
+
+.prioridad-media {
+    background-color: #f9dfad;
+    color: #a66a13;
+}
+
+.prioridad-baja {
+    background-color: #ccebd8;
+    color: #27734a;
+}
+
+/* ACCIONES */
+
+.acciones {
+    white-space: nowrap;
+}
+
+.form-eliminar {
+    display: inline;
+}
+
+.btn-editar,
+.btn-eliminar {
+    display: inline-block;
+    padding: 9px 14px;
+    border-radius: 8px;
     font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s;
 }
 
-@media (max-width: 768px) {
-
-    .contenedor {
-        width: 95%;
-    }
-
-    .encabezado {
-        margin-top: 20px;
-        padding: 25px 15px;
-    }
-
-    .encabezado h1 {
-        font-size: 30px;
-    }
-
-    .encabezado p {
-        font-size: 15px;
-    }
-
-    .tickets {
-        padding: 20px 15px;
-        margin-top: 20px;
-    }
-
-    .tickets>h2 {
-        font-size: 23px;
-    }
-
-    .tabla-contenedor {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 700px;
-    }
-
-    .formulario-ticket {
-        padding: 20px 15px;
-    }
+.btn-editar {
+    color: #a34444;
+    background-color: white;
+    border: 1px solid #d98282;
+    margin-right: 5px;
 }
+
+.btn-editar:hover {
+    background-color: #fce2e2;
+}
+
+.btn-eliminar {
+    color: white;
+    background-color: #d45f5f;
+    border: 1px solid #d45f5f;
+}
+
+.btn-eliminar:hover {
+    background-color: #bd4d4d;
+}
+
+/* PAGINADOR */
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.paginacion button {
+    background-color: #d98282;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.paginacion button:hover {
+    background-color: #c96f6f;
+}
+
+.pagina-activa {
+    font-weight: bold;
+    color: #a34444;
+}
+
+/* PANEL DERECHO */
+
+.panel-derecho {
+    position: sticky;
+    top: 20px;
+}
+
+.buscador,
+.resultados-busqueda {
+    background-color: #ffffff;
+    border: 1px solid #f0caca;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(120, 40, 40, 0.08);
+}
+
+.resultados-busqueda {
+    margin-top: 20px;
+}
+
+.buscador h2,
+.resultados-busqueda h3 {
+    color: #a34444;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.buscador input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #e2baba;
+    border-radius: 7px;
+    margin-bottom: 15px;
+}
+
+.buscador button {
+    width: 100%;
+    background-color: #d98282;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.buscador button:hover {
+    background-color: #c96f6f;
+}
+
+.resultado-ticket {
+    border: 1px solid #f0caca;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.resultado-ticket h4 {
+    color: #a34444;
+    margin-bottom: 8px;
+}
+
+.resultado-ticket p {
+    margin-bottom: 12px;
+}
+
+/* MENSAJES ERROR */
 
 .mensaje-error {
     margin-top: 8px;
@@ -289,10 +372,74 @@ tbody tr:hover {
     background-color: #fff1f1;
     color: #b42323;
     font-size: 14px;
-    font-weight: 500;
 }
 
 .mensaje-error::before {
     content: "⚠ ";
+}
+
+/* FOOTER */
+
+.pie {
+    text-align: center;
+    margin: 30px 0;
+    color: #8a5a5a;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+
+    .layout-principal {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-izquierdo,
+    .panel-derecho {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .encabezado h1 {
+        font-size: 30px;
+    }
+
+    table {
+        min-width: 700px;
+    }
+
+    .panel-centro,
+    .panel-izquierdo,
+    .panel-derecho {
+        width: 100%;
+    }
+}
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.paginacion a {
+    text-decoration: none;
+    color: white;
+    background-color: #d98282;
+    padding: 10px 15px;
+    border-radius: 8px;
     font-weight: bold;
+    transition: 0.2s;
+}
+
+.paginacion a:hover {
+    background-color: #c96f6f;
+}
+
+.pagina-activa {
+    background-color: #a34444 !important;
+    color: white !important;
 }

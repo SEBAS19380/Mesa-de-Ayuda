@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Ticket {
@@ -16,14 +18,18 @@ public class Ticket {
 
     private String descripcion;
 
-    private String prioridad;
+    private Integer prioridad;
 
     private String responsable;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public Ticket() {
     }
 
-    public Ticket(Long id, String titulo, String descripcion, String prioridad, String responsable) {
+    public Ticket(Long id, String titulo, String descripcion, Integer prioridad, String responsable) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -55,11 +61,11 @@ public class Ticket {
         this.descripcion = descripcion;
     }
 
-    public String getPrioridad() {
+    public Integer getPrioridad() {
         return prioridad;
     }
 
-    public void setPrioridad(String prioridad) {
+    public void setPrioridad(Integer prioridad) {
         this.prioridad = prioridad;
     }
 
@@ -70,4 +76,13 @@ public class Ticket {
     public void setResponsable(String responsable) {
         this.responsable = responsable;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
 }
