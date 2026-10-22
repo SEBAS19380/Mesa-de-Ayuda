@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <aside th:fragment="formularioTicket" class="panel-izquierdo">
+
+        <section class="card formulario-ticket shadow-sm">
+
+            <div class="card-body p-4">
+
+                <div class="text-center mb-4">
+
+                    <p class="tipo-formulario mb-2" th:text="${editar}
+                               ? 'MODIFICAR SOLICITUD'
+                               : 'NUEVA SOLICITUD'">
+                        NUEVA SOLICITUD
+                    </p>
+
+                    <h2 class="h4 fw-bold mb-0" th:text="${editar}
+                                ? 'Editar ticket'
+                                : 'Crear ticket'">
+                        Crear ticket
+                    </h2>
+
+                </div>
+
+                <form th:action="${editar}
+                        ? @{/tickets/actualizar/{id}(id=${ticket.id})}
+                        : @{/tickets/agregar}" th:object="${ticket}" method="post" novalidate>
+
+                    <!-- TÍTULO -->
+
+                    <div class="mb-3">
+
+                        <label for="titulo" class="form-label fw-semibold">
+                            Título
+                        </label>
+
+                        <input type="text" id="titulo" class="form-control" th:classappend="${#fields.hasErrors('titulo')}
+                                       ? ' is-invalid'
+                                       : ''" placeholder="Resumen del problema" autocomplete="off"
+                            th:field="*{titulo}">
+
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}">
+                            El título es obligatorio
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label for="descripcion" class="form-label fw-semibold">
+                            Descripción
+                        </label>
+
+                        <textarea id="descripcion" class="form-control" th:classappend="${#fields.hasErrors('descripcion')}
+                                          ? ' is-invalid'
+                                          : ''" rows="5" placeholder="Describa detalladamente el problema"
+                            th:field="*{descripcion}"></textarea>
+
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}"
+                            th:errors="*{descripcion}">
+                            La descripción es obligatoria
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label for="prioridad" class="form-label fw-semibold">
+                            Prioridad
+                        </label>
+
+                        <select id="prioridad" class="form-select" th:classappend="${#fields.hasErrors('prioridad')}
+                                        ? ' is-invalid'
+                                        : ''" th:field="*{prioridad}">
+
+                            <option value="">
+                                Seleccione una prioridad
+                            </option>
+
+                            <option value="3">
+                                ALTA
+                            </option>
+
+                            <option value="2">
+                                MEDIA
+                            </option>
+
+                            <option value="1">
+                                BAJA
+                            </option>
+
+                        </select>
+
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('prioridad')}"
+                            th:errors="*{prioridad}">
+                            La prioridad es obligatoria
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label for="responsable" class="form-label fw-semibold">
+                            Responsable
+                        </label>
+
+                        <input type="text" id="responsable" class="form-control" th:classappend="${#fields.hasErrors('responsable')}
+                                       ? ' is-invalid'
+                                       : ''" placeholder="Nombre o área responsable" autocomplete="off"
+                            th:field="*{responsable}">
+
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('responsable')}"
+                            th:errors="*{responsable}">
+                            El responsable es obligatorio
+                        </div>
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button type="submit" class="btn btn-primary btn-formulario" th:text="${editar}
+                                        ? 'Actualizar ticket'
+                                        : 'Agregar ticket'">
+                            Agregar ticket
+                        </button>
+
+                    </div>
+
+                    <div class="d-grid mt-2" th:if="${editar}">
+
+                        <a class="btn btn-outline-secondary" th:href="@{/tickets}">
+                            Cancelar edición
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+</body>
+
+</html>

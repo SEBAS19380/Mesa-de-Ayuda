@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <section th:fragment="listadoTickets" class="card panel-centro shadow-sm">
+
+        <div class="card-body p-3 p-md-4">
+
+            <div class="text-center mb-4">
+
+                <p class="tipo-listado mb-2">
+                    SOLICITUDES REGISTRADAS
+                </p>
+
+                <h2 class="h4 fw-bold mb-0">
+                    Listado de tickets
+                </h2>
+
+            </div>
+
+            <div class="table-responsive tabla-contenedor">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+
+                        <tr>
+                            <th scope="col" class="text-center">
+                                ID
+                            </th>
+
+                            <th scope="col">
+                                Título
+                            </th>
+
+                            <th scope="col">
+                                Descripción
+                            </th>
+
+                            <th scope="col" class="text-center">
+                                Prioridad
+                            </th>
+
+                            <th scope="col">
+                                Responsable
+                            </th>
+
+                            <th scope="col" class="text-center">
+                                Acciones
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="ticketListado : ${tickets}">
+
+                            <td class="text-center fw-semibold" th:text="${ticketListado.id}">
+                                1
+                            </td>
+
+                            <td>
+
+                                <span class="fw-semibold" th:text="${ticketListado.titulo}">
+                                    Título del ticket
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="descripcion-ticket" th:text="${ticketListado.descripcion}">
+                                    Descripción del ticket
+                                </div>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <span class="badge rounded-pill prioridad" th:classappend="${
+                                          ticketListado.prioridad == 3
+                                          ? ' prioridad-alta'
+                                          : ticketListado.prioridad == 2
+                                          ? ' prioridad-media'
+                                          : ' prioridad-baja'
+                                      }" th:text="${
+                                          ticketListado.prioridad == 3
+                                          ? 'ALTA'
+                                          : ticketListado.prioridad == 2
+                                          ? 'MEDIA'
+                                          : 'BAJA'
+                                      }">
+                                    MEDIA
+                                </span>
+
+                            </td>
+
+                            <td th:text="${ticketListado.responsable}">
+                                Responsable
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex flex-column
+                                            flex-sm-row
+                                            justify-content-center
+                                            gap-2">
+
+                                    <a class="btn btn-outline-primary btn-sm btn-editar" th:href="@{/tickets/editar/{id}
+                                               (id=${ticketListado.id})}">
+                                        Editar
+                                    </a>
+
+                                    <form class="m-0" th:action="@{/tickets/eliminar/{id}
+                                                  (id=${ticketListado.id})}" method="post">
+
+                                        <button class="btn btn-danger btn-sm btn-eliminar w-100" type="submit">
+                                            Eliminar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${tickets == null
+                                or #lists.isEmpty(tickets)}">
+
+                            <td colspan="6" class="text-center py-5">
+
+                                <div class="estado-vacio">
+
+                                    <p class="fs-5 fw-semibold mb-2">
+                                        No hay tickets registrados
+                                    </p>
+
+                                    <p class="mb-0">
+                                        Utilice el formulario para crear
+                                        la primera solicitud.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <nav class="mt-4" aria-label="Paginación de tickets" th:if="${totalPaginas != null
+                         and totalPaginas > 0}">
+
+                <ul class="pagination justify-content-center
+                           flex-wrap gap-1 mb-0">
+
+                    <li class="page-item" th:classappend="${paginaActual == null
+                                or paginaActual == 0}
+                                ? ' disabled'
+                                : ''">
+
+                        <a class="page-link" th:href="${paginaActual != null
+                                   and paginaActual > 0}
+                                   ? @{/tickets(pagina=${paginaActual - 1})}
+                                   : '#'" aria-label="Página anterior">
+                            Anterior
+                        </a>
+
+                    </li>
+
+                    <li class="page-item" th:each="i : ${#numbers.sequence(
+                                0,
+                                totalPaginas - 1)}" th:classappend="${i == paginaActual}
+                                ? ' active'
+                                : ''">
+
+                        <a class="page-link" th:href="@{/tickets(pagina=${i})}" th:text="${i + 1}">
+                            1
+                        </a>
+
+                    </li>
+
+                    <li class="page-item" th:classappend="${paginaActual == null
+                                or paginaActual >= totalPaginas - 1}
+                                ? ' disabled'
+                                : ''">
+
+                        <a class="page-link" th:href="${paginaActual != null
+                                   and paginaActual < totalPaginas - 1}
+                                   ? @{/tickets(pagina=${paginaActual + 1})}
+                                   : '#'" aria-label="Página siguiente">
+                            Siguiente
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

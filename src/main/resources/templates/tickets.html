@@ -3,417 +3,147 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Mesa de Ayuda - Tickets</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <link rel="stylesheet" th:href="@{/css/tickets.css}">
 </head>
 
-<body>
+<body th:classappend="${tema == 'oscuro'}
+        ? 'tema-oscuro'
+        : ''">
 
-    <main class="contenedor">
+    <main class="container-fluid px-3 px-md-4 px-xxl-5 py-4">
 
-        <header class="encabezado">
+        <header class="encabezado rounded-4 shadow-sm p-4 mb-4">
 
-            <h1>Mesa de Ayuda</h1>
+            <div class="row align-items-center g-4">
 
-            <p>Gestión y seguimiento de tickets</p>
+                <div class="col-12 col-lg">
+
+                    <div class="text-center text-lg-start">
+
+                        <p class="etiqueta-tickets mb-2">
+                            MESA DE AYUDA
+                        </p>
+
+                        <h1 class="display-6 fw-bold mb-2">
+                            Gestión de tickets
+                        </h1>
+
+                        <p class="descripcion-tickets fs-5 mb-0">
+                            Registre, consulte y realice seguimiento
+                            a las solicitudes de soporte.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-lg-auto" th:if="${session.usuarioLogueado != null}">
+
+                    <div class="d-flex flex-column flex-sm-row
+                                align-items-stretch align-items-sm-center
+                                justify-content-center gap-3">
+
+                        <p class="usuario-activo mb-0 text-center">
+
+                            Usuario activo:
+
+                            <strong th:text="${session.usuarioLogueado.nombre}">
+                                Usuario
+                            </strong>
+
+                        </p>
+
+                        <form class="form-logout m-0" th:action="@{/logout}" method="post">
+
+                            <button class="btn btn-danger btn-logout w-100" type="submit">
+                                Cerrar sesión
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </header>
 
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${mensaje}">
+
+            <span th:text="${mensaje}">
+                Operación completada correctamente.
+            </span>
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar">
+            </button>
+
+        </div>
+
         <section class="tickets">
 
-            <div class="layout-principal">
+            <div class="row g-4 align-items-start">
 
-                <!-- PANEL IZQUIERDO: CREAR O EDITAR -->
+                <div class="col-12 col-xl-3">
 
-                <aside class="panel-izquierdo">
-
-                    <div class="formulario-ticket">
-
-                        <h2 th:text="${editar}
-                                ? 'Editar Ticket'
-                                : 'Crear Ticket'">
-                            Crear Ticket
-                        </h2>
-
-                        <form th:action="${editar}
-                                ? @{/tickets/actualizar/{id}(id=${ticket.id})}
-                                : @{/tickets/agregar}"
-                              th:object="${ticket}"
-                              method="post"
-                              novalidate>
-
-                            <div class="campo">
-
-                                <label for="titulo">
-                                    Título:
-                                </label>
-
-                                <input type="text"
-                                       id="titulo"
-                                       th:field="*{titulo}">
-
-                                <div class="mensaje-error"
-                                     th:if="${#fields.hasErrors('titulo')}"
-                                     th:errors="*{titulo}">
-                                </div>
-
-                            </div>
-
-                            <div class="campo">
-
-                                <label for="descripcion">
-                                    Descripción:
-                                </label>
-
-                                <textarea id="descripcion"
-                                          rows="4"
-                                          th:field="*{descripcion}"></textarea>
-
-                                <div class="mensaje-error"
-                                     th:if="${#fields.hasErrors('descripcion')}"
-                                     th:errors="*{descripcion}">
-                                </div>
-
-                            </div>
-
-                            <div class="campo">
-
-                                <label for="prioridad">
-                                    Prioridad:
-                                </label>
-
-                                <select id="prioridad"
-                                        th:field="*{prioridad}">
-
-                                    <option value="">
-                                        Seleccione una prioridad
-                                    </option>
-
-                                    <option value="3">
-                                        ALTA
-                                    </option>
-
-                                    <option value="2">
-                                        MEDIA
-                                    </option>
-
-                                    <option value="1">
-                                        BAJA
-                                    </option>
-
-                                </select>
-
-                                <div class="mensaje-error"
-                                     th:if="${#fields.hasErrors('prioridad')}"
-                                     th:errors="*{prioridad}">
-                                </div>
-
-                            </div>
-
-                            <div class="campo">
-
-                                <label for="responsable">
-                                    Responsable:
-                                </label>
-
-                                <input type="text"
-                                       id="responsable"
-                                       th:field="*{responsable}">
-
-                                <div class="mensaje-error"
-                                     th:if="${#fields.hasErrors('responsable')}"
-                                     th:errors="*{responsable}">
-                                </div>
-
-                            </div>
-
-                            <button type="submit"
-                                    th:text="${editar}
-                                            ? 'Actualizar Ticket'
-                                            : 'Agregar Ticket'">
-                                Agregar Ticket
-                            </button>
-
-                        </form>
-
+                    <div th:replace="~{
+                        formulario-ticket :: formularioTicket
+                    }">
                     </div>
 
-                </aside>
+                </div>
 
-                <!-- PANEL CENTRAL: LISTADO PAGINADO -->
+                <div class="col-12 col-xl-6">
 
-                <section class="panel-centro">
-
-                    <h2>Listado de Tickets</h2>
-
-                    <div class="mensaje-exito"
-                         th:if="${mensaje}"
-                         th:text="${mensaje}">
+                    <div th:replace="~{
+                        listado-tickets :: listadoTickets
+                    }">
                     </div>
 
-                    <div class="tabla-contenedor">
+                </div>
 
-                        <table>
+                <div class="col-12 col-xl-3">
 
-                            <thead>
-
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Título</th>
-                                    <th>Descripción</th>
-                                    <th>Prioridad</th>
-                                    <th>Responsable</th>
-                                    <th>Acciones</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                <tr th:each="ticketListado : ${tickets}">
-
-                                    <td th:text="${ticketListado.id}">
-                                    </td>
-
-                                    <td th:text="${ticketListado.titulo}">
-                                    </td>
-
-                                    <td th:text="${ticketListado.descripcion}">
-                                    </td>
-
-                                    <td>
-
-                                        <span class="prioridad"
-                                              th:classappend="${ticketListado.prioridad == 3
-                                                      ? ' prioridad-alta'
-                                                      : ticketListado.prioridad == 2
-                                                      ? ' prioridad-media'
-                                                      : ' prioridad-baja'}"
-                                              th:text="${ticketListado.prioridad == 3
-                                                      ? 'ALTA'
-                                                      : ticketListado.prioridad == 2
-                                                      ? 'MEDIA'
-                                                      : 'BAJA'}">
-                                        </span>
-
-                                    </td>
-
-                                    <td th:text="${ticketListado.responsable}">
-                                    </td>
-
-                                    <td class="acciones">
-
-                                        <a class="btn-editar"
-                                           th:href="@{/tickets/editar/{id}
-                                                   (id=${ticketListado.id})}">
-                                            ✎ Editar
-                                        </a>
-
-                                        <form class="form-eliminar"
-                                              th:action="@{/tickets/eliminar/{id}
-                                                      (id=${ticketListado.id})}"
-                                              method="post">
-
-                                            <button class="btn-eliminar"
-                                                    type="submit">
-                                                🗑 Eliminar
-                                            </button>
-
-                                        </form>
-
-                                    </td>
-
-                                </tr>
-
-                                <tr th:if="${tickets == null or #lists.isEmpty(tickets)}">
-
-                                    <td colspan="6">
-                                        No hay tickets registrados.
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
+                    <div th:replace="~{
+                        busqueda-tickets :: busquedaTickets
+                    }">
                     </div>
 
-                    <!-- PAGINACIÓN -->
-
-                    <div class="paginacion"
-                         th:if="${totalPaginas != null and totalPaginas > 0}">
-
-                        <a th:if="${paginaActual != null and paginaActual > 0}"
-                           th:href="@{/tickets
-                                   (pagina=${paginaActual - 1})}">
-                            ← Anterior
-                        </a>
-
-                        <span th:each="i : ${#numbers.sequence(
-                                0,
-                                totalPaginas - 1)}">
-
-                            <a th:href="@{/tickets(pagina=${i})}"
-                               th:text="${i + 1}"
-                               th:class="${i == paginaActual
-                                       ? 'pagina-activa'
-                                       : ''}">
-                                1
-                            </a>
-
-                        </span>
-
-                        <a th:if="${paginaActual != null
-                                and paginaActual < totalPaginas - 1}"
-                           th:href="@{/tickets
-                                   (pagina=${paginaActual + 1})}">
-                            Siguiente →
-                        </a>
-
-                    </div>
-
-                </section>
-
-                <!-- PANEL DERECHO: BÚSQUEDA -->
-
-                <aside class="panel-derecho">
-
-                    <div class="buscador">
-
-                        <h2>Buscar Ticket</h2>
-
-                        <form th:action="@{/tickets}"
-                              method="get">
-
-                            <input type="text"
-                                   name="buscar"
-                                   th:value="${buscar}"
-                                   placeholder="Buscar título, descripción o responsable">
-
-                            <button type="submit">
-                                Buscar
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                    <div class="resultados-busqueda">
-
-                        <h3>Resultados</h3>
-
-                        <!-- RESULTADOS ENCONTRADOS -->
-
-                        <div th:if="${buscar != null
-                                and !buscar.isBlank()
-                                and resultadosBusqueda != null
-                                and !#lists.isEmpty(resultadosBusqueda)}">
-
-                            <div class="resultado-ticket"
-                                 th:each="ticketResultado : ${resultadosBusqueda}">
-
-                                <h4 th:text="${ticketResultado.titulo}">
-                                    Título
-                                </h4>
-
-                                <p th:text="${ticketResultado.descripcion}">
-                                    Descripción
-                                </p>
-
-                                <p>
-                                    Responsable:
-
-                                    <strong th:text="${ticketResultado.responsable}">
-                                        Responsable
-                                    </strong>
-                                </p>
-
-                                <p>
-                                    Prioridad:
-
-                                    <span class="prioridad"
-                                          th:classappend="${ticketResultado.prioridad == 3
-                                                  ? ' prioridad-alta'
-                                                  : ticketResultado.prioridad == 2
-                                                  ? ' prioridad-media'
-                                                  : ' prioridad-baja'}"
-                                          th:text="${ticketResultado.prioridad == 3
-                                                  ? 'ALTA'
-                                                  : ticketResultado.prioridad == 2
-                                                  ? 'MEDIA'
-                                                  : 'BAJA'}">
-                                    </span>
-
-                                </p>
-
-                                <div class="acciones">
-
-                                    <a class="btn-editar"
-                                       th:href="@{/tickets/editar/{id}
-                                               (id=${ticketResultado.id})}">
-                                        ✎ Editar
-                                    </a>
-
-                                    <form class="form-eliminar"
-                                          th:action="@{/tickets/eliminar/{id}
-                                                  (id=${ticketResultado.id})}"
-                                          method="post">
-
-                                        <button class="btn-eliminar"
-                                                type="submit">
-                                            🗑 Eliminar
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- BÚSQUEDA SIN COINCIDENCIAS -->
-
-                        <div th:if="${buscar != null
-                                and !buscar.isBlank()
-                                and (resultadosBusqueda == null
-                                or #lists.isEmpty(resultadosBusqueda))}">
-
-                            <p>
-                                No se encontraron tickets con ese criterio.
-                            </p>
-
-                        </div>
-
-                        <!-- TODAVÍA NO SE HA BUSCADO -->
-
-                        <div th:if="${buscar == null or buscar.isBlank()}">
-
-                            <p>
-                                Realice una búsqueda para visualizar resultados.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </aside>
+                </div>
 
             </div>
 
         </section>
 
-        <footer class="pie">
+        <div class="d-flex justify-content-center mt-4">
 
-            <p>Sistema de Mesa de Ayuda</p>
+            <a class="btn btn-volver-menu" th:href="@{/menu}">
+                ← Volver al menú
+            </a>
+
+        </div>
+
+        <footer class="pie text-center py-4 mt-4">
+
+            <p class="mb-0">
+                Sistema de Mesa de Ayuda
+            </p>
 
         </footer>
 
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
 
 </body>
 

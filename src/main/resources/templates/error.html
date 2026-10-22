@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${codigo + ' - ' + tituloError}">
+        Error - Mesa de Ayuda
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link rel="stylesheet" th:href="@{/css/inicio.css}">
+</head>
+
+<body th:classappend="${tema == 'oscuro'}
+        ? 'tema-oscuro'
+        : ''">
+
+    <main class="container-fluid min-vh-100
+                 d-flex align-items-center py-4">
+
+        <div class="container">
+
+            <div class="row justify-content-center">
+
+                <div class="col-12 col-sm-11 col-md-9
+                            col-lg-7 col-xl-6">
+
+                    <section class="card tarjeta-error
+                                    border-0 shadow-lg
+                                    overflow-hidden">
+
+                        <div class="barra-error"></div>
+
+                        <div class="card-body
+                                    p-4 p-md-5
+                                    text-center">
+
+                            <div class="icono-error mx-auto mb-4" aria-hidden="true">
+
+                                <span>!</span>
+
+                            </div>
+
+                            <p class="codigo-error
+                                      display-2
+                                      fw-bold
+                                      lh-1
+                                      mb-3" th:text="${codigo}">
+                                404
+                            </p>
+
+                            <h1 class="h2 fw-bold mb-3" th:text="${tituloError}">
+                                Página no encontrada
+                            </h1>
+
+                            <p class="descripcion-error
+                                      fs-5
+                                      mx-auto
+                                      mb-4" th:text="${mensajeError}">
+                                No fue posible completar la solicitud.
+                            </p>
+
+                            <div class="d-flex
+                                        flex-column
+                                        flex-sm-row
+                                        justify-content-center
+                                        gap-3">
+
+                                <a class="btn boton btn-lg" th:href="@{/}">
+                                    Volver al inicio
+                                </a>
+
+                                <a class="btn boton-secundario btn-lg" th:if="${sesionActiva}" th:href="@{/menu}">
+                                    Volver al menú
+                                </a>
+
+                            </div>
+
+                            <p class="texto-informativo
+                                      small
+                                      mt-4
+                                      mb-0">
+
+                                Si el problema continúa, regrese al sistema
+                                e intente realizar nuevamente la operación.
+
+                            </p>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+
+</body>
+
+</html>

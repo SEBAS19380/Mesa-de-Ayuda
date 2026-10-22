@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <aside th:fragment="busquedaTickets" class="panel-derecho">
+
+        <section class="card buscador shadow-sm mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="text-center mb-4">
+
+                    <p class="tipo-buscador mb-2">
+                        CONSULTA RÁPIDA
+                    </p>
+
+                    <h2 class="h4 fw-bold mb-0">
+                        Buscar ticket
+                    </h2>
+
+                </div>
+
+                <form th:action="@{/tickets}" method="get">
+
+                    <label for="buscar" class="form-label fw-semibold">
+                        Criterio de búsqueda
+                    </label>
+
+                    <input type="text" id="buscar" name="buscar" class="form-control" th:value="${buscar}"
+                        placeholder="Título, descripción o responsable" autocomplete="off">
+
+                    <div class="d-grid mt-3">
+
+                        <button type="submit" class="btn btn-primary btn-buscar">
+                            Buscar
+                        </button>
+
+                    </div>
+
+                    <div class="d-grid mt-2" th:if="${buscar != null
+                                 and !buscar.isBlank()}">
+
+                        <a class="btn btn-outline-secondary" th:href="@{/tickets}">
+                            Limpiar búsqueda
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <section class="card resultados-busqueda shadow-sm">
+
+            <div class="card-body p-4">
+
+                <div class="text-center mb-4">
+
+                    <p class="tipo-resultados mb-2">
+                        COINCIDENCIAS
+                    </p>
+
+                    <h3 class="h5 fw-bold mb-0">
+                        Resultados
+                    </h3>
+
+                </div>
+
+                <div th:if="${buscar != null
+                        and !buscar.isBlank()
+                        and resultadosBusqueda != null
+                        and !#lists.isEmpty(resultadosBusqueda)}">
+
+                    <p class="cantidad-resultados small mb-3">
+
+                        Resultados para:
+
+                        <strong th:text="${buscar}">
+                            criterio
+                        </strong>
+
+                    </p>
+
+                    <article class="card resultado-ticket mb-3" th:each="ticketResultado
+                             : ${resultadosBusqueda}">
+
+                        <div class="card-body p-3">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start
+                                        gap-2
+                                        mb-3">
+
+                                <h4 class="h6 fw-bold mb-0" th:text="${ticketResultado.titulo}">
+                                    Título del ticket
+                                </h4>
+
+                                <span class="badge rounded-pill prioridad" th:classappend="${ticketResultado.prioridad == 3
+                                              ? ' prioridad-alta'
+                                              : ticketResultado.prioridad == 2
+                                              ? ' prioridad-media'
+                                              : ' prioridad-baja'}" th:text="${ticketResultado.prioridad == 3
+                                              ? 'ALTA'
+                                              : ticketResultado.prioridad == 2
+                                              ? 'MEDIA'
+                                              : 'BAJA'}">
+                                    MEDIA
+                                </span>
+
+                            </div>
+
+                            <p class="descripcion-resultado mb-3" th:text="${ticketResultado.descripcion}">
+                                Descripción del ticket
+                            </p>
+
+                            <p class="responsable-resultado small mb-3">
+
+                                <span class="fw-semibold">
+                                    Responsable:
+                                </span>
+
+                                <span th:text="${ticketResultado.responsable}">
+                                    Responsable
+                                </span>
+
+                            </p>
+
+                            <div class="d-flex flex-column
+                                        flex-sm-row gap-2">
+
+                                <a class="btn btn-outline-primary
+                                          btn-sm btn-editar flex-fill" th:href="@{/tickets/editar/{id}
+                                           (id=${ticketResultado.id})}">
+                                    Editar
+                                </a>
+
+                                <form class="m-0 flex-fill" th:action="@{/tickets/eliminar/{id}
+                                              (id=${ticketResultado.id})}" method="post">
+
+                                    <button class="btn btn-danger
+                                                   btn-sm btn-eliminar
+                                                   w-100" type="submit">
+                                        Eliminar
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+                <div class="estado-busqueda text-center py-4" th:if="${buscar != null
+                             and !buscar.isBlank()
+                             and (resultadosBusqueda == null
+                             or #lists.isEmpty(resultadosBusqueda))}">
+
+                    <div class="icono-estado mb-3" aria-hidden="true">
+                        ⌕
+                    </div>
+
+                    <p class="fw-semibold mb-2">
+                        No se encontraron tickets
+                    </p>
+
+                    <p class="small mb-3">
+                        No existen coincidencias para:
+
+                        <strong th:text="${buscar}">
+                            criterio
+                        </strong>
+                    </p>
+
+                    <a class="btn btn-outline-secondary btn-sm" th:href="@{/tickets}">
+                        Limpiar búsqueda
+                    </a>
+
+                </div>
+
+                <div class="estado-busqueda text-center py-4" th:if="${buscar == null
+                             or buscar.isBlank()}">
+
+                    <div class="icono-estado mb-3" aria-hidden="true">
+                        ⌕
+                    </div>
+
+                    <p class="fw-semibold mb-2">
+                        Realice una búsqueda
+                    </p>
+
+                    <p class="small mb-0">
+                        Puede buscar por título, descripción
+                        o responsable.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+</body>
+
+</html>

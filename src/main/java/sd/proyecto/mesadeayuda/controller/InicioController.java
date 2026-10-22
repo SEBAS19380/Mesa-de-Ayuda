@@ -1,11 +1,12 @@
 package sd.proyecto.mesadeayuda.controller;
 
-import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,26 +19,34 @@ public class InicioController {
 
     private final UsuarioService usuarioService;
 
-    public InicioController(UsuarioService usuarioService) {
+    public InicioController(
+            UsuarioService usuarioService) {
+
         this.usuarioService = usuarioService;
     }
 
     @GetMapping("/")
     public String inicio() {
+
         return "index";
     }
 
     @GetMapping("/registro")
-    public String mostrarRegistro(Model model) {
+    public String mostrarRegistro(
+            Model model) {
 
-        model.addAttribute("usuario", new UsuarioDTO());
+        model.addAttribute(
+                "usuario",
+                new UsuarioDTO());
 
         return "registro";
     }
 
     @PostMapping("/registro")
     public String registrarUsuario(
-            @Valid @ModelAttribute("usuario") UsuarioDTO usuarioDTO,
+            @Valid
+            @ModelAttribute("usuario")
+            UsuarioDTO usuarioDTO,
             BindingResult result,
             Model model) {
 
@@ -55,7 +64,8 @@ public class InicioController {
             return "registro";
         }
 
-        if (usuarioService.existeCorreo(usuarioDTO.getCorreo())) {
+        if (usuarioService.existeCorreo(
+                usuarioDTO.getCorreo())) {
 
             model.addAttribute(
                     "errorCorreo",
@@ -73,22 +83,32 @@ public class InicioController {
     }
 
     @GetMapping("/login")
-    public String mostrarLogin(Model model) {
+    public String mostrarLogin(
+            Model model,
+            HttpSession session) {
 
-        model.addAttribute("usuario", new UsuarioDTO());
+        if (session.getAttribute("usuarioLogueado") != null) {
+            return "redirect:/menu";
+        }
+
+        model.addAttribute(
+                "usuario",
+                new UsuarioDTO());
 
         return "login";
     }
 
     @PostMapping("/login")
     public String iniciarSesion(
-            @ModelAttribute("usuario") UsuarioDTO usuarioDTO,
+            @ModelAttribute("usuario")
+            UsuarioDTO usuarioDTO,
             Model model,
             HttpSession session) {
 
-        boolean loginValido = usuarioService.validarLogin(
-                usuarioDTO.getCorreo(),
-                usuarioDTO.getPassword());
+        boolean loginValido =
+                usuarioService.validarLogin(
+                        usuarioDTO.getCorreo(),
+                        usuarioDTO.getPassword());
 
         if (!loginValido) {
 
@@ -104,6 +124,35 @@ public class InicioController {
                 usuarioService.obtenerPorCorreo(
                         usuarioDTO.getCorreo()));
 
-        return "redirect:/tickets";
+        return "redirect:/menu";
+    }
+
+    @GetMapping("/menu")
+    public String mostrarMenu(
+            @CookieValue(
+                    name = "tema",
+                    defaultValue = "claro")
+            String tema,
+            Model model) {
+
+        String temaPermitido =
+                "oscuro".equals(tema)
+                        ? "oscuro"
+                        : "claro";
+
+        model.addAttribute(
+                "tema",
+                temaPermitido);
+
+        return "menu";
+    }
+
+    @PostMapping("/logout")
+    public String cerrarSesion(
+            HttpSession session) {
+
+        session.invalidate();
+
+        return "redirect:/";
     }
 }

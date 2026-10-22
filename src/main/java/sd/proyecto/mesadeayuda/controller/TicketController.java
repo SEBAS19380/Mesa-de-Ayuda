@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,243 +27,252 @@ import sd.proyecto.mesadeayuda.service.TicketService;
 @RequestMapping("/tickets")
 public class TicketController {
 
-    private final TicketService ticketService;
+        private static final int TAMANO_PAGINA = 5;
+        private static final int LIMITE_BUSQUEDA = 9999;
 
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+        private final TicketService ticketService;
 
-    @GetMapping
-    public String listarTickets(
-            @RequestParam(defaultValue = "0") int pagina,
-            @RequestParam(required = false) String buscar,
-            Model model,
-            HttpSession session) {
+        public TicketController(
+                        TicketService ticketService) {
 
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                this.ticketService = ticketService;
         }
 
-        Page<Ticket> page = ticketService.listarPaginado(
-                pagina,
-                5);
+        @ModelAttribute
+        public void cargarTema(
+                        @CookieValue(name = "tema", defaultValue = "claro") String tema,
+                        Model model) {
 
-        model.addAttribute(
-                "tickets",
-                page.getContent());
+                String temaPermitido = "oscuro".equals(tema)
+                                ? "oscuro"
+                                : "claro";
 
-        model.addAttribute(
-                "paginaActual",
-                pagina);
-
-        model.addAttribute(
-                "totalPaginas",
-                page.getTotalPages());
-
-        model.addAttribute(
-                "buscar",
-                buscar);
-
-        if (buscar != null && !buscar.isBlank()) {
-
-            model.addAttribute(
-                    "resultadosBusqueda",
-                    ticketService.buscar(
-                            buscar,
-                            0,
-                            9999)
-                            .getContent());
-
-        } else {
-
-            model.addAttribute(
-                    "resultadosBusqueda",
-                    Collections.emptyList());
+                model.addAttribute(
+                                "tema",
+                                temaPermitido);
         }
 
-        model.addAttribute(
-                "ticket",
-                new TicketDTO());
+        @GetMapping
+        public String listarTickets(
+                        @RequestParam(defaultValue = "0") int pagina,
+                        @RequestParam(required = false) String buscar,
+                        Model model) {
 
-        return "tickets";
-    }
+                Page<Ticket> page = ticketService.listarPaginado(
+                                pagina,
+                                TAMANO_PAGINA);
 
-    @GetMapping("/nuevo")
-    public String mostrarFormulario(
-            Model model,
-            HttpSession session) {
+                model.addAttribute(
+                                "tickets",
+                                page.getContent());
 
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                model.addAttribute(
+                                "paginaActual",
+                                pagina);
+
+                model.addAttribute(
+                                "totalPaginas",
+                                page.getTotalPages());
+
+                model.addAttribute(
+                                "buscar",
+                                buscar);
+
+                if (buscar != null
+                                && !buscar.isBlank()) {
+
+                        model.addAttribute(
+                                        "resultadosBusqueda",
+                                        ticketService.buscar(
+                                                        buscar,
+                                                        0,
+                                                        LIMITE_BUSQUEDA)
+                                                        .getContent());
+
+                } else {
+
+                        model.addAttribute(
+                                        "resultadosBusqueda",
+                                        Collections.emptyList());
+                }
+
+                model.addAttribute(
+                                "ticket",
+                                new TicketDTO());
+
+                return "tickets";
         }
 
-        cargarDatosPrincipales(model);
+        @GetMapping("/nuevo")
+        public String mostrarFormulario(
+                        Model model) {
 
-        model.addAttribute(
-                "ticket",
-                new TicketDTO());
+                cargarDatosPrincipales(model);
 
-        return "tickets";
-    }
+                model.addAttribute(
+                                "ticket",
+                                new TicketDTO());
 
-    @PostMapping("/agregar")
-    public String agregarTicket(
-            @Valid @ModelAttribute("ticket") TicketDTO ticketDTO,
-            BindingResult result,
-            Model model,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                return "tickets";
         }
 
-        if (result.hasErrors()) {
+        @PostMapping("/agregar")
+        public String agregarTicket(
+                        @Valid @ModelAttribute("ticket") TicketDTO ticketDTO,
+                        BindingResult result,
+                        Model model,
+                        RedirectAttributes redirectAttributes,
+                        HttpSession session) {
 
-            cargarDatosPrincipales(model);
+                if (result.hasErrors()) {
 
-            return "tickets";
+                        cargarDatosPrincipales(model);
+
+                        return "tickets";
+                }
+
+                Usuario usuario = (Usuario) session.getAttribute(
+                                "usuarioLogueado");
+
+                ticketService.agregar(
+                                ticketDTO.getTitulo(),
+                                ticketDTO.getDescripcion(),
+                                ticketDTO.getPrioridad(),
+                                ticketDTO.getResponsable(),
+                                usuario);
+
+                redirectAttributes.addFlashAttribute(
+                                "mensaje",
+                                "Ticket agregado correctamente.");
+
+                return "redirect:/tickets";
         }
 
-        Usuario usuario = (Usuario) session.getAttribute(
-                "usuarioLogueado");
+        @GetMapping("/editar/{id}")
+        public String mostrarFormularioEditar(
+                        @PathVariable Long id,
+                        Model model) {
 
-        ticketService.agregar(
-                ticketDTO.getTitulo(),
-                ticketDTO.getDescripcion(),
-                ticketDTO.getPrioridad(),
-                ticketDTO.getResponsable(),
-                usuario);
+                Ticket ticket = ticketService.buscarPorId(id)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Ticket no encontrado"));
 
-        redirectAttributes.addFlashAttribute(
-                "mensaje",
-                "Ticket agregado correctamente.");
+                TicketDTO ticketDTO = convertirADTO(ticket);
 
-        return "redirect:/tickets";
-    }
+                cargarDatosPrincipales(model);
 
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(
-            @PathVariable Long id,
-            Model model,
-            HttpSession session) {
+                model.addAttribute(
+                                "ticket",
+                                ticketDTO);
 
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                model.addAttribute(
+                                "editar",
+                                true);
+
+                return "tickets";
         }
 
-        Ticket ticket = ticketService.buscarPorId(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Ticket no encontrado"));
+        @PostMapping("/actualizar/{id}")
+        public String actualizarTicket(
+                        @PathVariable Long id,
+                        @Valid @ModelAttribute("ticket") TicketDTO ticketDTO,
+                        BindingResult result,
+                        Model model,
+                        RedirectAttributes redirectAttributes) {
 
-        TicketDTO ticketDTO = new TicketDTO();
+                if (result.hasErrors()) {
 
-        ticketDTO.setId(ticket.getId());
-        ticketDTO.setTitulo(ticket.getTitulo());
-        ticketDTO.setDescripcion(ticket.getDescripcion());
-        ticketDTO.setPrioridad(ticket.getPrioridad());
-        ticketDTO.setResponsable(ticket.getResponsable());
+                        ticketDTO.setId(id);
 
-        cargarDatosPrincipales(model);
+                        cargarDatosPrincipales(model);
 
-        model.addAttribute(
-                "ticket",
-                ticketDTO);
+                        model.addAttribute(
+                                        "ticket",
+                                        ticketDTO);
 
-        model.addAttribute(
-                "editar",
-                true);
+                        model.addAttribute(
+                                        "editar",
+                                        true);
 
-        return "tickets";
-    }
+                        return "tickets";
+                }
 
-    @PostMapping("/actualizar/{id}")
-    public String actualizarTicket(
-            @PathVariable Long id,
-            @Valid @ModelAttribute("ticket") TicketDTO ticketDTO,
-            BindingResult result,
-            Model model,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
+                ticketService.actualizar(
+                                id,
+                                ticketDTO.getTitulo(),
+                                ticketDTO.getDescripcion(),
+                                ticketDTO.getPrioridad(),
+                                ticketDTO.getResponsable());
 
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                redirectAttributes.addFlashAttribute(
+                                "mensaje",
+                                "Ticket actualizado correctamente.");
+
+                return "redirect:/tickets";
         }
 
-        if (result.hasErrors()) {
+        @PostMapping("/eliminar/{id}")
+        public String eliminarTicket(
+                        @PathVariable Long id,
+                        RedirectAttributes redirectAttributes) {
 
-            ticketDTO.setId(id);
+                ticketService.eliminar(id);
 
-            cargarDatosPrincipales(model);
+                redirectAttributes.addFlashAttribute(
+                                "mensaje",
+                                "Ticket eliminado correctamente.");
 
-            model.addAttribute(
-                    "ticket",
-                    ticketDTO);
-
-            model.addAttribute(
-                    "editar",
-                    true);
-
-            return "tickets";
+                return "redirect:/tickets";
         }
 
-        ticketService.actualizar(
-                id,
-                ticketDTO.getTitulo(),
-                ticketDTO.getDescripcion(),
-                ticketDTO.getPrioridad(),
-                ticketDTO.getResponsable());
+        private void cargarDatosPrincipales(
+                        Model model) {
 
-        redirectAttributes.addFlashAttribute(
-                "mensaje",
-                "Ticket actualizado correctamente.");
+                Page<Ticket> page = ticketService.listarPaginado(
+                                0,
+                                TAMANO_PAGINA);
 
-        return "redirect:/tickets";
-    }
+                model.addAttribute(
+                                "tickets",
+                                page.getContent());
 
-    @PostMapping("/eliminar/{id}")
-    public String eliminarTicket(
-            @PathVariable Long id,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
+                model.addAttribute(
+                                "paginaActual",
+                                0);
 
-        if (session.getAttribute("usuarioLogueado") == null) {
-            return "redirect:/";
+                model.addAttribute(
+                                "totalPaginas",
+                                page.getTotalPages());
+
+                model.addAttribute(
+                                "buscar",
+                                "");
+
+                model.addAttribute(
+                                "resultadosBusqueda",
+                                Collections.emptyList());
         }
 
-        ticketService.eliminar(id);
+        private TicketDTO convertirADTO(
+                        Ticket ticket) {
 
-        redirectAttributes.addFlashAttribute(
-                "mensaje",
-                "Ticket eliminado correctamente.");
+                TicketDTO ticketDTO = new TicketDTO();
 
-        return "redirect:/tickets";
-    }
+                ticketDTO.setId(
+                                ticket.getId());
 
-    private void cargarDatosPrincipales(Model model) {
+                ticketDTO.setTitulo(
+                                ticket.getTitulo());
 
-        Page<Ticket> page = ticketService.listarPaginado(
-                0,
-                5);
+                ticketDTO.setDescripcion(
+                                ticket.getDescripcion());
 
-        model.addAttribute(
-                "tickets",
-                page.getContent());
+                ticketDTO.setPrioridad(
+                                ticket.getPrioridad());
 
-        model.addAttribute(
-                "paginaActual",
-                0);
+                ticketDTO.setResponsable(
+                                ticket.getResponsable());
 
-        model.addAttribute(
-                "totalPaginas",
-                page.getTotalPages());
-
-        model.addAttribute(
-                "buscar",
-                "");
-
-        model.addAttribute(
-                "resultadosBusqueda",
-                Collections.emptyList());
-    }
+                return ticketDTO;
+        }
 }
