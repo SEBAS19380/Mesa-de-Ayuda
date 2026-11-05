@@ -4,8 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Ticket {
@@ -29,7 +29,13 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long id, String titulo, String descripcion, Integer prioridad, String responsable) {
+    public Ticket(
+            Long id,
+            String titulo,
+            String descripcion,
+            Integer prioridad,
+            String responsable) {
+
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -41,7 +47,9 @@ public class Ticket {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(
+            Long id) {
+
         this.id = id;
     }
 
@@ -49,7 +57,9 @@ public class Ticket {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(
+            String titulo) {
+
         this.titulo = titulo;
     }
 
@@ -57,7 +67,9 @@ public class Ticket {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(
+            String descripcion) {
+
         this.descripcion = descripcion;
     }
 
@@ -65,7 +77,9 @@ public class Ticket {
         return prioridad;
     }
 
-    public void setPrioridad(Integer prioridad) {
+    public void setPrioridad(
+            Integer prioridad) {
+
         this.prioridad = prioridad;
     }
 
@@ -73,7 +87,9 @@ public class Ticket {
         return responsable;
     }
 
-    public void setResponsable(String responsable) {
+    public void setResponsable(
+            String responsable) {
+
         this.responsable = responsable;
     }
 
@@ -81,8 +97,9 @@ public class Ticket {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(
+            Usuario usuario) {
+
         this.usuario = usuario;
     }
-    
 }

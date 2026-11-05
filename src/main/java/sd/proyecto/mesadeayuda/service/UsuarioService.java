@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import sd.proyecto.mesadeayuda.exception.UsuarioNoEncontradoException;
 import sd.proyecto.mesadeayuda.model.Usuario;
 import sd.proyecto.mesadeayuda.repository.UsuarioRepository;
 
@@ -12,7 +13,9 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(
+            UsuarioRepository usuarioRepository) {
+
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -25,39 +28,58 @@ public class UsuarioService {
                 null,
                 nombre,
                 correo,
-                password
-        );
+                password);
 
         return usuarioRepository.save(usuario);
     }
 
-    public Optional<Usuario> buscarPorCorreo(String correo) {
+    public Optional<Usuario> buscarPorCorreo(
+            String correo) {
+
         return usuarioRepository.findByCorreo(correo);
     }
 
-    public boolean validarLogin(String correo, String password) {
+    public boolean validarLogin(
+            String correo,
+            String password) {
 
-        Optional<Usuario> usuario = usuarioRepository.findByCorreo(correo);
+        Optional<Usuario> usuario =
+                usuarioRepository.findByCorreo(correo);
 
         if (usuario.isPresent()) {
-            return usuario.get().getPassword().equals(password);
+
+            return usuario.get()
+                    .getPassword()
+                    .equals(password);
         }
 
         return false;
     }
 
-    public boolean existeCorreo(String correo) {
+    public boolean existeCorreo(
+            String correo) {
 
-    return usuarioRepository.findByCorreo(correo).isPresent();
-    
+        return usuarioRepository
+                .findByCorreo(correo)
+                .isPresent();
     }
 
-    public Usuario obtenerPorCorreo(String correo) {
+    public Usuario obtenerPorCorreo(
+            String correo) {
 
-    return usuarioRepository
-            .findByCorreo(correo)
-            .orElseThrow(() ->
-                    new RuntimeException("Usuario no encontrado"));
-}
+        return usuarioRepository
+                .findByCorreo(correo)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Usuario no encontrado"));
+    }
 
+    public Usuario obtenerPorId(
+            Long id) {
+
+        return usuarioRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new UsuarioNoEncontradoException(id));
+    }
 }

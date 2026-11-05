@@ -3,25 +3,29 @@ package sd.proyecto.mesadeayuda.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+import sd.proyecto.mesadeayuda.exception.TicketNoEncontradoException;
 import sd.proyecto.mesadeayuda.model.Ticket;
-import sd.proyecto.mesadeayuda.repository.TicketRepository;
 import sd.proyecto.mesadeayuda.model.Usuario;
+import sd.proyecto.mesadeayuda.repository.TicketRepository;
 
 @Service
 public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(
+            TicketRepository ticketRepository) {
+
         this.ticketRepository = ticketRepository;
     }
 
     public List<Ticket> listar() {
+
         return ticketRepository.findAll();
     }
 
@@ -39,12 +43,14 @@ public class TicketService {
                 prioridad,
                 responsable);
 
-                nuevoTicket.setUsuario(usuario);
+        nuevoTicket.setUsuario(usuario);
 
         return ticketRepository.save(nuevoTicket);
     }
 
-    public Optional<Ticket> buscarPorId(Long id) {
+    public Optional<Ticket> buscarPorId(
+            Long id) {
+
         return ticketRepository.findById(id);
     }
 
@@ -55,13 +61,31 @@ public class TicketService {
             Integer prioridad,
             String responsable) {
 
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket no encontrado"));
+        Ticket ticket = obtenerTicketPorId(id);
 
         ticket.setTitulo(titulo);
         ticket.setDescripcion(descripcion);
         ticket.setPrioridad(prioridad);
         ticket.setResponsable(responsable);
+
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket actualizar(
+            Long id,
+            String titulo,
+            String descripcion,
+            Integer prioridad,
+            String responsable,
+            Usuario usuario) {
+
+        Ticket ticket = obtenerTicketPorId(id);
+
+        ticket.setTitulo(titulo);
+        ticket.setDescripcion(descripcion);
+        ticket.setPrioridad(prioridad);
+        ticket.setResponsable(responsable);
+        ticket.setUsuario(usuario);
 
         return ticketRepository.save(ticket);
     }
@@ -74,8 +98,7 @@ public class TicketService {
                 pagina,
                 tamano);
 
-        return ticketRepository.findAll(
-                pageable);
+        return ticketRepository.findAll(pageable);
     }
 
     public Page<Ticket> buscar(
@@ -95,7 +118,23 @@ public class TicketService {
                         pageable);
     }
 
-    public void eliminar(Long id) {
+    public void eliminar(
+            Long id) {
+
+        if (!ticketRepository.existsById(id)) {
+
+            throw new TicketNoEncontradoException(id);
+        }
+
         ticketRepository.deleteById(id);
+    }
+
+    public Ticket obtenerTicketPorId(
+            Long id) {
+
+        return ticketRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new TicketNoEncontradoException(id));
     }
 }

@@ -2,11 +2,11 @@ package sd.proyecto.mesadeayuda.model;
 
 import java.util.List;
 
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -27,7 +27,12 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, String correo, String password) {
+    public Usuario(
+            Long id,
+            String nombre,
+            String correo,
+            String password) {
+
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
@@ -38,7 +43,9 @@ public class Usuario {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(
+            Long id) {
+
         this.id = id;
     }
 
@@ -46,7 +53,9 @@ public class Usuario {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(
+            String nombre) {
+
         this.nombre = nombre;
     }
 
@@ -54,7 +63,9 @@ public class Usuario {
         return correo;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(
+            String correo) {
+
         this.correo = correo;
     }
 
@@ -62,7 +73,9 @@ public class Usuario {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(
+            String password) {
+
         this.password = password;
     }
 
@@ -70,7 +83,9 @@ public class Usuario {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(
+            List<Ticket> tickets) {
+
         this.tickets = tickets;
     }
 }

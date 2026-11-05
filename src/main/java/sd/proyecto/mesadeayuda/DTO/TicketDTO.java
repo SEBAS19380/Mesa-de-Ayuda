@@ -26,7 +26,9 @@ public class TicketDTO {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(
+            Long id) {
+
         this.id = id;
     }
 
@@ -34,7 +36,9 @@ public class TicketDTO {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(
+            String titulo) {
+
         this.titulo = titulo;
     }
 
@@ -42,7 +46,9 @@ public class TicketDTO {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(
+            String descripcion) {
+
         this.descripcion = descripcion;
     }
 
@@ -50,7 +56,9 @@ public class TicketDTO {
         return prioridad;
     }
 
-    public void setPrioridad(Integer prioridad) {
+    public void setPrioridad(
+            Integer prioridad) {
+
         this.prioridad = prioridad;
     }
 
@@ -58,7 +66,9 @@ public class TicketDTO {
         return responsable;
     }
 
-    public void setResponsable(String responsable) {
+    public void setResponsable(
+            String responsable) {
+
         this.responsable = responsable;
     }
 }
